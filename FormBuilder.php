@@ -8,10 +8,7 @@
  * * * * */
 class FormBuilder
 {
-    public function __construct()
-    {
-        error_reporting(0);
-    }
+
     public $args_help = array(
         'type' => 'THE TYPE OF THE FIELD, IF LEFT SHALL ASSUMED input type text<hr/>',
         'name' => 'THE NAME',
@@ -39,22 +36,24 @@ class FormBuilder
         }
         $types = array('text','password', 'textarea', 'email', 'checkbox', 'radio', 'select','countries','kvselect','multiselect','multiple', 'date','date-special', 'image', 'range','wp_color', 'wp_upload', 'submit');
 
-        if ((!isset($name) || empty($name)) && (!isset($id) || empty($id)) && (!isset($label) || empty($label))) {
-            echo "<div class='text-danger form-group row'>Please specify at least one unique identifier! i.e: id,name or label.</div>";
+        if ((!isset($name) || empty($name)) ) {
+            echo "<div class='text-danger form-group row'>Please specify field name.</div>";
             return;
-        } elseif ((!isset($name) || empty($name)) && (!isset($id) || empty($id)) && !empty($label)) {
-            $the_label = ucfirst($label);
-            $the_id = str_replace(' ', '_', $label);
-            $the_name = str_replace(' ', '_', $label);
-        } elseif ((!isset($name) || empty($name)) && !empty($id) && (!isset($label) || empty($label))) {
-            $the_label = ucfirst($this->make_label($id));
+        } elseif (  (!isset($id) || empty($id))  ) {
+            echo "<div class='text-danger form-group row'>Please specify field id.</div>";
+            return;
+        } elseif ( !empty($id) && (!isset($label) )) {
+            echo "<div class='text-danger form-group row'>Please specify field label.</div>";
+            return;
+        } elseif (  (!isset($id) || empty($id)) && (!isset($label) || empty($label))) {
+            echo "<div class='text-danger form-group row'>Please specify field id and label.</div>";
+            return;
+        }
+           $the_label = ucfirst($this->make_label($label));
             $the_id = $id;
-            $the_name = $id;
-        } elseif (!empty($name) && (!isset($id) || empty($id)) && (!isset($label) || empty($label))) {
-            $the_label = ucfirst($this->make_label($name));
-            $the_id = $name;
             $the_name = $name;
-        }?>
+        
+        ?>
             <?php
         if ($type === "range") {
             if (($min == "") || ($min == "")) {
